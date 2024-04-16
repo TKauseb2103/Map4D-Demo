@@ -25,8 +25,8 @@ class MapScreen extends StatefulWidget {
 
 class _MapScreenState extends State<MapScreen> {
   MFLatLng? _pickedLocation;
-  late MFMapViewController _controller;
-
+   MFMapViewController? _controller;
+  NewPlaceLocation? newPlaceLocation;
   @override
   void initState() {
     super.initState();
@@ -42,7 +42,6 @@ class _MapScreenState extends State<MapScreen> {
       onPOITap: _handlePOITap,
       initialCameraPosition: _getInitialCameraPosition(),
       markers: _buildMarkers(),
-      onCameraIdle: onCameraIdle,
     );
 
     return MaterialApp(
@@ -51,10 +50,53 @@ class _MapScreenState extends State<MapScreen> {
         body: Stack(
           children: <Widget>[
             map,
+            Positioned(
+              bottom: 90.0,
+              right: 22.0,
+              child: Container(
+                width: 50.0,
+                height: 50.0,
+                decoration: BoxDecoration(
+                  shape: BoxShape.circle,
+                  color: Colors.white,
+                  boxShadow: [
+                    BoxShadow(
+                      color: Colors.black.withOpacity(0.2),
+                      spreadRadius: 2,
+                      blurRadius: 4,
+                      offset: const Offset(0, 2), // Điều chỉnh vị trí đổ bóng
+                    ),
+                  ],
+                ),
+                child: IconButton(
+                  onPressed: () => handleMovePlace(widget.updatedLocation),
+                  icon: const Icon(
+                    Icons.location_on_outlined,
+                    size: 30,
+                  ),
+                  color: Colors.black54, // Màu của icon
+                ),
+              ),
+            ),
           ],
         ),
       ),
     );
+  }
+
+  void handleMovePlace(NewPlaceLocation selectedLocation) {
+    print(
+        'Selected location: ${selectedLocation.latitude}, ${selectedLocation.longitude}');
+    setState(() {
+      newPlaceLocation = selectedLocation;
+    });
+    final update = MFCameraUpdate.newLatLng(
+      MFLatLng(
+        newPlaceLocation?.latitude ?? 0.0,
+        newPlaceLocation?.longitude ?? 0.0,
+      ),
+    );
+    _controller?.moveCamera(update);
   }
 
   void _handleMapTap(MFLatLng position) {
@@ -66,16 +108,13 @@ class _MapScreenState extends State<MapScreen> {
 
   void _handlePOITap(String placeId, String name, MFLatLng updatedLocation) {
     setState(() {
-      _showMoreLocationInfo(placeId);
-      _pickedLocation = updatedLocation;
-    });
-  }
-
-  void onCameraIdle() => print('onCameraIdle');
-
-  void _moveCamera(MFLatLng updatedLocation) {
-    setState(() {
-      _pickedLocation = updatedLocation;
+      if (_pickedLocation == updatedLocation) {
+        _pickedLocation = null;
+        !widget.isSelecting;
+      } else {
+        _showMoreLocationInfo(placeId);
+        _pickedLocation = updatedLocation;
+      }
     });
   }
 
@@ -103,7 +142,7 @@ class _MapScreenState extends State<MapScreen> {
     final completer = Completer<MFMapViewController>();
     setState(() {
       _controller = _controller;
-      _controller.moveCamera(
+      _controller?.moveCamera(
         MFCameraUpdate.newLatLng(
           MFLatLng(
             widget.placeLocation?.latitude ?? 0.0,
@@ -125,20 +164,33 @@ class _MapScreenState extends State<MapScreen> {
     );
   }
 
-  void updateCameraPosition(MFLatLng newPosition) {
-    _controller.moveCamera(
-      MFCameraUpdate.newLatLng(newPosition),
-    );
-  }
-
   Set<MFMarker> _buildMarkers() {
-    return (_pickedLocation == null && widget.isSelecting)
-        ? {}
+    return (_pickedLocation == null && widget.isSelecting == true)
+        ? {
+            MFMarker(
+              markerId: MFMarkerId(widget.toString()),
+              position: MFLatLng(
+                widget.updatedLocation.latitude,
+                widget.updatedLocation.longitude,
+              ),
+            ),
+          }
         : {
             MFMarker(
               markerId: MFMarkerId(widget.toString()),
               position: _pickedLocation!,
+              // visible: widget.isSelecting,
             ),
           };
   }
 }
+
+// {
+//       MFMarker(
+//         markerId: MFMarkerId(widget.toString()),
+//         position: MFLatLng(
+//           widget.updatedLocation.latitude,
+//           widget.updatedLocation.longitude,
+//         ),
+//       ),
+//     };

@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:map4d_map/map4d_map.dart';
 import '../models/place.dart';
 import '../widgets/search_location.dart';
-import 'package:demo_map4d/category/location_list.dart';
 
 import 'map.dart';
 
@@ -19,7 +18,6 @@ class HomeScreen extends StatefulWidget {
   final bool isSelecting;
   final MFMapViewController? controller;
   final NewPlaceLocation? newLocation;
-  
 
   @override
   State<HomeScreen> createState() => _HomeScreenState();
@@ -28,20 +26,19 @@ class HomeScreen extends StatefulWidget {
 class _HomeScreenState extends State<HomeScreen> {
   PlaceLocation? placeLocation;
   NewPlaceLocation? newPlaceLocation;
-  void handleMovePlace(NewPlaceLocation selectedLocation) async {
-    print(
-        'Selected location: ${selectedLocation.latitude}, ${selectedLocation.longitude}');
+  void handleMovePlace(NewPlaceLocation selectedLocation) {
+    // print(
+    //     'Selected location: ${selectedLocation.latitude}, ${selectedLocation.longitude}');
     setState(() {
       newPlaceLocation = selectedLocation;
     });
-    await widget.controller?.moveCamera(
-      MFCameraUpdate.newLatLng(
-        MFLatLng(
-          newPlaceLocation?.latitude ?? 0.0,
-          newPlaceLocation?.longitude ?? 0.0,
-        ),
+    final update = MFCameraUpdate.newLatLng(
+      MFLatLng(
+        newPlaceLocation?.latitude ?? 0.0,
+        newPlaceLocation?.longitude ?? 0.0,
       ),
     );
+    widget.controller?.moveCamera(update);
   }
 
   @override

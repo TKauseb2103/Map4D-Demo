@@ -4,13 +4,10 @@ PODS:
     - Flutter
     - Map4dMap (~> 2.6)
   - Map4dMap (2.7.1)
-  - package_info_plus (0.4.5):
-    - Flutter
 
 DEPENDENCIES:
   - Flutter (from `Flutter`)
   - map4d_map (from `.symlinks/plugins/map4d_map/ios`)
-  - package_info_plus (from `.symlinks/plugins/package_info_plus/ios`)
 
 SPEC REPOS:
   trunk:
@@ -21,14 +18,11 @@ EXTERNAL SOURCES:
     :path: Flutter
   map4d_map:
     :path: ".symlinks/plugins/map4d_map/ios"
-  package_info_plus:
-    :path: ".symlinks/plugins/package_info_plus/ios"
 
 SPEC CHECKSUMS:
   Flutter: f04841e97a9d0b0a8025694d0796dd46242b2854
   map4d_map: 00c9bb179fdcda032f285c995755ce7bffa86a50
   Map4dMap: faaa591498f068385f026e6423d0fb1c8edf1ecb
-  package_info_plus: 115f4ad11e0698c8c1c5d8a689390df880f47e85
 
 PODFILE CHECKSUM: 7be2f5f74864d463a8ad433546ed1de7e0f29aef
 
