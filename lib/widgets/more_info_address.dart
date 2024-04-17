@@ -74,7 +74,7 @@ class _MoreInfoAddressState extends State<MoreInfoPOIAddress> {
                       child: Align(
                         alignment: Alignment.centerLeft,
                         child: Text(
-                          'More Information',
+                          'Thông tin chi tiết',
                           style: TextStyle(
                             fontWeight: FontWeight.bold,
                             fontSize: 20,
@@ -83,11 +83,10 @@ class _MoreInfoAddressState extends State<MoreInfoPOIAddress> {
                         ),
                       ),
                     ),
-                    TextButton(
-                      child: const Text('Close'),
-                      onPressed: () {
-                        Navigator.of(context).pop();
-                      },
+                    ElevatedButton.icon(
+                      onPressed: () {},
+                      icon: const Icon(Icons.alt_route_outlined),
+                      label: const Text('Tìm đường đi'),
                     ),
                   ],
                 ),
@@ -130,47 +129,49 @@ class _MoreInfoAState extends State<MoreInfoAddress> {
   Widget build(BuildContext context) {
     return SizedBox(
       height: 220,
-      child: Column(
-        mainAxisSize: MainAxisSize.min,
-        children: [
-          Row(
-            children: [
-              const Expanded(
-                child: Align(
-                  alignment: Alignment.centerLeft,
-                  child: Text(
-                    'More Information',
-                    style: TextStyle(
-                      fontWeight: FontWeight.bold,
-                      fontSize: 20,
-                      color: Colors.blue,
+      child: Padding(
+        padding: const EdgeInsets.all(8.0),
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            Row(
+              children: [
+                const Expanded(
+                  child: Align(
+                    alignment: Alignment.centerLeft,
+                    child: Text(
+                      'Thông tin chi tiết',
+                      style: TextStyle(
+                        fontWeight: FontWeight.bold,
+                        fontSize: 20,
+                        color: Colors.blue,
+                      ),
                     ),
                   ),
                 ),
-              ),
-              TextButton(
-                child: const Text('Đóng'),
-                onPressed: () {
-                  Navigator.of(context).pop();
-                },
-              ),
-            ],
-          ),
-          const Divider(
-            height: 20,
-            color: Colors.grey,
-            thickness: 1,
-            indent: 0,
-            endIndent: 0,
-          ),
-          const SizedBox(
-            height: 20,
-          ),
-          Text(
-            'Vĩ độ: ${widget.location.latitude}\nKinh độ: ${widget.location.longitude}',
-          ),
-          const SizedBox(),
-        ],
+                ElevatedButton.icon(
+                  onPressed: () {},
+                  icon: const Icon(Icons.alt_route_outlined),
+                  label: const Text('Tìm đường đi'),
+                ),
+              ],
+            ),
+            const Divider(
+              height: 20,
+              color: Colors.grey,
+              thickness: 1,
+              indent: 0,
+              endIndent: 0,
+            ),
+            const SizedBox(
+              height: 20,
+            ),
+            Text(
+              'Vĩ độ: ${widget.location.latitude}\nKinh độ: ${widget.location.longitude}',
+            ),
+            const SizedBox(),
+          ],
+        ),
       ),
     );
   }

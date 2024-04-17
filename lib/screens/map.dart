@@ -1,5 +1,3 @@
-import 'dart:async';
-
 import 'package:flutter/material.dart';
 import 'package:map4d_map/map4d_map.dart';
 import '../models/place.dart';
@@ -25,19 +23,16 @@ class MapScreen extends StatefulWidget {
 
 class _MapScreenState extends State<MapScreen> {
   MFLatLng? _pickedLocation;
-   MFMapViewController? _controller;
+  late final MFMapViewController _controller;
   NewPlaceLocation? newPlaceLocation;
-  @override
-  void initState() {
-    super.initState();
-    // _controller = MFMapViewController as MFMapViewController;
-  }
+
 
   @override
   Widget build(BuildContext context) {
     final map = MFMapView(
       myLocationEnabled: true,
       myLocationButtonEnabled: true,
+      onMapCreated: onMapCreated,
       onTap: _handleMapTap,
       onPOITap: _handlePOITap,
       initialCameraPosition: _getInitialCameraPosition(),
@@ -69,12 +64,12 @@ class _MapScreenState extends State<MapScreen> {
                   ],
                 ),
                 child: IconButton(
-                  onPressed: () => handleMovePlace(widget.updatedLocation),
+                  onPressed: moveCamera,
                   icon: const Icon(
                     Icons.location_on_outlined,
                     size: 30,
                   ),
-                  color: Colors.black54, // Màu của icon
+                  color: Colors.black54,
                 ),
               ),
             ),
@@ -84,19 +79,21 @@ class _MapScreenState extends State<MapScreen> {
     );
   }
 
-  void handleMovePlace(NewPlaceLocation selectedLocation) {
-    print(
-        'Selected location: ${selectedLocation.latitude}, ${selectedLocation.longitude}');
+  void onMapCreated(MFMapViewController controller) {
     setState(() {
-      newPlaceLocation = selectedLocation;
+      _controller = controller;
+      // _isMapCreated = true;
     });
-    final update = MFCameraUpdate.newLatLng(
-      MFLatLng(
-        newPlaceLocation?.latitude ?? 0.0,
-        newPlaceLocation?.longitude ?? 0.0,
-      ),
-    );
-    _controller?.moveCamera(update);
+  }
+
+  void moveCamera() {
+    final markerPosition = _pickedLocation ??
+        MFLatLng(
+          widget.updatedLocation.latitude,
+          widget.updatedLocation.longitude,
+        );
+    final cameraUpdate = MFCameraUpdate.newLatLng(markerPosition);
+    _controller.animateCamera(cameraUpdate);
   }
 
   void _handleMapTap(MFLatLng position) {
@@ -137,22 +134,22 @@ class _MapScreenState extends State<MapScreen> {
     );
   }
 
-  Future<MFMapViewController> moveCamera(
-      NewPlaceLocation updatedLocation) async {
-    final completer = Completer<MFMapViewController>();
-    setState(() {
-      _controller = _controller;
-      _controller?.moveCamera(
-        MFCameraUpdate.newLatLng(
-          MFLatLng(
-            widget.placeLocation?.latitude ?? 0.0,
-            widget.placeLocation?.longitude ?? 0.0,
-          ),
-        ),
-      );
-    });
-    return completer.future;
-  }
+  // Future<MFMapViewController> moveCamera(
+  //     NewPlaceLocation updatedLocation) async {
+  //   final completer = Completer<MFMapViewController>();
+  //   setState(() {
+  //     _controller = _controller;
+  //     _controller?.moveCamera(
+  //       MFCameraUpdate.newLatLng(
+  //         MFLatLng(
+  //           widget.placeLocation?.latitude ?? 0.0,
+  //           widget.placeLocation?.longitude ?? 0.0,
+  //         ),
+  //       ),
+  //     );
+  //   });
+  //   return completer.future;
+  // }
 
   MFCameraPosition _getInitialCameraPosition() {
     return const MFCameraPosition(
@@ -179,18 +176,7 @@ class _MapScreenState extends State<MapScreen> {
             MFMarker(
               markerId: MFMarkerId(widget.toString()),
               position: _pickedLocation!,
-              // visible: widget.isSelecting,
             ),
           };
   }
 }
-
-// {
-//       MFMarker(
-//         markerId: MFMarkerId(widget.toString()),
-//         position: MFLatLng(
-//           widget.updatedLocation.latitude,
-//           widget.updatedLocation.longitude,
-//         ),
-//       ),
-//     };

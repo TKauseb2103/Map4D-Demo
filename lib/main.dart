@@ -8,8 +8,8 @@ void main() {
       debugShowCheckedModeBanner: false,
       home: HomeScreen(
         location: PlaceLocation(
-          latitude: 10.12345,
-          longitude: 20.54321,
+          latitude: -10.12345,
+          longitude: 80.54321,
           address: 'Custom Address',
           placeId: 'Custom Place ID',
         ),
