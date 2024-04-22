@@ -27,8 +27,6 @@ class _HomeScreenState extends State<HomeScreen> {
   PlaceLocation? placeLocation;
   NewPlaceLocation? newPlaceLocation;
   void handleMovePlace(NewPlaceLocation selectedLocation) {
-    // print(
-    //     'Selected location: ${selectedLocation.latitude}, ${selectedLocation.longitude}');
     setState(() {
       newPlaceLocation = selectedLocation;
     });

@@ -26,7 +26,6 @@ class _MapScreenState extends State<MapScreen> {
   late final MFMapViewController _controller;
   NewPlaceLocation? newPlaceLocation;
 
-
   @override
   Widget build(BuildContext context) {
     final map = MFMapView(
@@ -133,23 +132,6 @@ class _MapScreenState extends State<MapScreen> {
       },
     );
   }
-
-  // Future<MFMapViewController> moveCamera(
-  //     NewPlaceLocation updatedLocation) async {
-  //   final completer = Completer<MFMapViewController>();
-  //   setState(() {
-  //     _controller = _controller;
-  //     _controller?.moveCamera(
-  //       MFCameraUpdate.newLatLng(
-  //         MFLatLng(
-  //           widget.placeLocation?.latitude ?? 0.0,
-  //           widget.placeLocation?.longitude ?? 0.0,
-  //         ),
-  //       ),
-  //     );
-  //   });
-  //   return completer.future;
-  // }
 
   MFCameraPosition _getInitialCameraPosition() {
     return const MFCameraPosition(

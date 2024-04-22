@@ -5,7 +5,6 @@ import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'package:map4d_map/map4d_map.dart';
 
-import '../category/address_data.dart';
 
 class SearchField extends SearchDelegate<PlaceLocation> {
   final MFMapViewController? controller;
@@ -34,7 +33,7 @@ class SearchField extends SearchDelegate<PlaceLocation> {
             latitude: latLocationData,
             longitude: lngLocationData,
             address: item["address"],
-            placeId: '', // You can provide a placeId here if available
+            placeId: '',
           );
           onMovePlace(newPlaceLocation);
           places.add(Places(
